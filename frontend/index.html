@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TopoFast Web</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="map"></div>
+
+  <div id="panel">
+    <h1>TopoFast</h1>
+    <p class="hint">Dibujá un área en el mapa (rectángulo o polígono) y generá el DEM + curvas de nivel.</p>
+
+    <label>API Key de OpenTopography
+      <input id="apiKey" type="text" placeholder="Tu API Key gratuita">
+    </label>
+    <p class="hint small">
+      Registrate gratis en
+      <a href="https://portal.opentopography.org/myopentopo" target="_blank" rel="noopener">
+        portal.opentopography.org/myopentopo
+      </a>. Se guarda solo en tu navegador.
+    </p>
+
+    <label>Modelo de elevación
+      <select id="demtype">
+        <option value="COP30">Copernicus GLO-30 (recomendado, sin vacíos)</option>
+        <option value="COP90">Copernicus GLO-90</option>
+        <option value="AW3D30">ALOS World 3D (30 m)</option>
+        <option value="SRTMGL1">SRTM GL1 (30 m, puede tener vacíos)</option>
+        <option value="SRTMGL3">SRTM GL3 (90 m, puede tener vacíos)</option>
+      </select>
+    </label>
+
+    <label>Equidistancia de curvas (m)
+      <input id="interval" type="number" min="0.5" step="0.5" value="10">
+    </label>
+
+    <label class="checkbox">
+      <input id="intermediateContours" type="checkbox">
+      Activar curvas intermedias, cada
+      <input id="intermediateInterval" type="number" min="0.1" step="0.5" value="2" style="width: 70px" disabled>
+      m
+    </label>
+
+    <label class="checkbox">
+      <input id="fillVoids" type="checkbox" checked>
+      Rellenar vacíos del DEM (recomendado en zonas de nieve/glaciares)
+    </label>
+
+    <button id="generateBtn">Generar curvas de nivel</button>
+    <p id="status" class="hint"></p>
+
+    <div id="resultPanel" hidden>
+      <hr>
+      <h2>Informe del área</h2>
+      <pre id="reportText"></pre>
+
+      <h2>Exportar</h2>
+      <label>Curvas en el DXF
+        <select id="dxfMode">
+          <option value="3D">3D (con elevación real, para CAD)</option>
+          <option value="2D">2D (solo planta)</option>
+        </select>
+      </label>
+      <button id="exportDxfBtn">Exportar a DXF</button>
+      <button id="exportLandxmlBtn">Exportar a LandXML (TIN para Civil3D)</button>
+
+      <h2>Descargar</h2>
+      <a id="downloadDem" href="#" download>DEM (GeoTIFF)</a>
+      <a id="downloadContours" href="#" download>Curvas de nivel (GeoJSON)</a>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
